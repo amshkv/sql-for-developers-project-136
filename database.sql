@@ -47,3 +47,21 @@ CREATE TABLE program_items (
     program_id BIGINT NOT NULL REFERENCES programs (id),
     PRIMARY KEY (program_id, module_id)
 );
+
+CREATE TABLE teaching_groups (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    slug VARCHAR(255),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    username VARCHAR(255),
+    email VARCHAR(255),
+    password_digest VARCHAR(255),
+    kind VARCHAR(255),
+    teaching_group_id INTEGER REFERENCES teaching_groups (id),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
