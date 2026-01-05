@@ -3,12 +3,13 @@ CREATE TABLE courses (
     name VARCHAR(255),
     description TEXT,
     deleted_at TIMESTAMP,
-    crated_at TIMESTAMP,
+    created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
 
 CREATE TABLE lessons (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(255),
     content TEXT,
     video_url TEXT,
     position INTEGER,
@@ -108,7 +109,7 @@ CREATE TABLE certificates (
     user_id BIGINT REFERENCES users (id) NOT NULL,
     program_id BIGINT REFERENCES programs (id) NOT NULL,
     url VARCHAR(255),
-    issues_at TIMESTAMP,
+    issued_at TIMESTAMP,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
