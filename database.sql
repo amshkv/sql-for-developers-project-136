@@ -110,3 +110,46 @@ CREATE TABLE certificates (
     crated_at TIMESTAMP,
     updated_at TIMESTAMP
 );
+
+CREATE TABLE quizzes (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id BIGINT REFERENCES lessons (id) NOT NULL,
+    title VARCHAR(255),
+    body TEXT,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE exercises (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id BIGINT REFERENCES lessons (id) NOT NULL,
+    title VARCHAR(255),
+    url VARCHAR(255),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE discussions (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id BIGINT REFERENCES lessons (id) NOT NULL,
+    body TEXT,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TYPE post_state AS ENUM (
+    'created',
+    'in moderation',
+    'published',
+    'archived'
+);
+
+CREATE TABLE blog (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT REFERENCES users (id) NOT NULL,
+    title VARCHAR(255),
+    body TEXT,
+    state POST_STATE,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
