@@ -15,7 +15,7 @@ CREATE TABLE lessons (
     state VARCHAR(255),
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-    course_id INTEGER REFERENCES courses (id)
+    course_id BIGINT REFERENCES courses (id)
 );
 
 CREATE TABLE modules (
@@ -61,7 +61,52 @@ CREATE TABLE users (
     email VARCHAR(255),
     password_digest VARCHAR(255),
     kind VARCHAR(255),
-    teaching_group_id INTEGER REFERENCES teaching_groups (id),
+    teaching_group_id BIGINT REFERENCES teaching_groups (id),
     created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TYPE enr_state AS ENUM ('active', 'pending', 'cancelled', 'completed');
+
+CREATE TABLE enrollments (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    program_id BIGINT REFERENCES programs (id) NOT NULL,
+    user_id BIGINT REFERENCES users (id) NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    state ENR_STATE
+);
+
+CREATE TYPE payment_state AS ENUM ('pending', 'paid', 'failed', 'refunded');
+
+CREATE TABLE payments (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    enrollment_id BIGINT REFERENCES enrollments (id) NOT NULL,
+    state PAYMENT_STATE,
+    payment_date TIMESTAMP,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TYPE com_state AS ENUM ('active', 'completed', 'pending', 'cancelled');
+
+CREATE TABLE program_completions (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT REFERENCES users (id) NOT NULL,
+    program_id BIGINT REFERENCES programs (id) NOT NULL,
+    state COM_STATE,
+    started_at TIMESTAMP,
+    ended_at TIMESTAMP,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE certificates (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT REFERENCES users (id) NOT NULL,
+    program_id BIGINT REFERENCES programs (id) NOT NULL,
+    url VARCHAR(255),
+    publish_date TIMESTAMP,
+    crated_at TIMESTAMP,
     updated_at TIMESTAMP
 );
